@@ -15,12 +15,12 @@ writeThiningReport(){
 	if [[ -e ~/desktop/ThiningRepot.txt ]]; then
 		echo $* >> ~/desktop/ThiningRepot.txt
 	else
-		echo "OriginalSize | CurrentSize | ReduceSize | ReduceRate | ResourcePath" > ~/desktop/ThiningRepot.txt
+		echo "ImageCount | OriginalSize | CurrentSize | ReduceSize | ReduceRate | ResourcePath" > ~/desktop/ThiningRepot.txt
 		writeThiningReport $*
 	fi
 
   	# open ~/desktop/ThiningRepot.txt
-  	column -t -s '|' ~/desktop/ThiningRepot.txt
+  	column -ts '|' ~/desktop/ThiningRepot.txt
 }
 
 #detect img type if it is a png
@@ -92,7 +92,7 @@ start(){
 	totalReduceRate=$(echo "scale=2;$totalReduceSize / $totalOriginalSize * 100"|bc)
 
 	echo "$totalCount PNG images have been optimized!"
-	writeThiningReport "${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $currentDir"
+	writeThiningReport "${totalCount} | ${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $currentDir"
 }
 
 start
