@@ -6,6 +6,7 @@ totalOriginalSize=0
 totalCurrentSize=0
 totalReduceSize=0
 totalReduceRate=0
+totalCount=0
 
 #write the thining result to file
 #param:result
@@ -57,6 +58,7 @@ thinPngImage(){
 		#calculate
 		totalOriginalSize=$(expr $totalOriginalSize + $originalSize)
 		totalCurrentSize=$(expr $totalCurrentSize + $currentSize)
+		totalCount=$(expr $totalCount + 1)
 
 		echo $totalOriginalSize $totalCurrentSize
 	else
@@ -89,6 +91,7 @@ start(){
 	totalReduceSize=$(echo "scale=2;$totalOriginalSize - $totalCurrentSize"|bc)
 	totalReduceRate=$(echo "scale=2;$totalReduceSize / $totalOriginalSize * 100"|bc)
 
+	echo "$totalCount PNG images have been optimized!"
 	writeThiningReport "${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $currentDir"
 }
 
