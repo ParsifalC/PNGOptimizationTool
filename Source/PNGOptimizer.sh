@@ -89,7 +89,7 @@ start(){
 	totalReduceSize=$(echo "scale=2;$totalOriginalSize - $totalCurrentSize"|bc)
 	totalReduceRate=$(echo "scale=2;$totalReduceSize / $totalOriginalSize * 100"|bc)
 
-	writeThiningReport "${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $*"
+	writeThiningReport "${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $currentDir"
 }
 
 start
