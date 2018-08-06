@@ -68,31 +68,45 @@ thinPngImage(){
 
 #start thining all the png imgs under current directory
 startThining(){
-	for i in $(ls)
+	echo $1
+	for file in $(ls $1)
 	do 
-		if [[ -d "$i" ]]; then
-			cd "$i"
-			startThining
-			cd ..
+		localPath="$1/$file"
+		echo "$localPath"
+
+		if [[ -d $localPath ]]; then
+			echo "directory"
+			startThining $localPath
 		else
-			thinPngImage $i
+			thinPngImage $localPath
 		fi
 	done
 }
 
 #start thining & log report
 start(){
-	startThining
+	if [[ ! $1 ]]; then
+		resourcePath=$currentDir
+	else
+		resourcePath=$1
+	fi
+
+	startThining $resourcePath
 
 	echo "=======================calculating======================="
 
-	totalOriginalSize=$(echo "scale=2;$totalOriginalSize / 1204"|bc)
-	totalCurrentSize=$(echo "scale=2;$totalCurrentSize / 1024"|bc)
-	totalReduceSize=$(echo "scale=2;$totalOriginalSize - $totalCurrentSize"|bc)
-	totalReduceRate=$(echo "scale=2;$totalReduceSize / $totalOriginalSize * 100"|bc)
+	if [[ $(echo "$totalOriginalSize > 0"|bc) == 1 && $(echo "$totalCurrentSize > 0"|bc) == 1 && $(echo "$totalOriginalSize > $totalCurrentSize"|bc) == 1 ]]; then
+		totalOriginalSize=$(echo "scale=2;$totalOriginalSize / 1204"|bc)
+		totalCurrentSize=$(echo "scale=2;$totalCurrentSize / 1024"|bc)
+		totalReduceSize=$(echo "scale=2;$totalOriginalSize - $totalCurrentSize"|bc)
+		totalReduceRate=$(echo "scale=2;$totalReduceSize / $totalOriginalSize * 100"|bc)
 
-	echo "$totalCount PNG images have been optimized!"
-	writeThiningReport "${totalCount} | ${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $currentDir"
+		echo "$totalCount PNG images have been optimized!"
+		writeThiningReport "${totalCount} | ${totalOriginalSize}KB | ${totalCurrentSize}KB | ${totalReduceSize}KB | ${totalReduceRate}% | $currentDir"
+
+	else
+		echo "Nothing has been optimized!You may need to check the given resource path!"
+	fi
 }
 
-start
+start $1
