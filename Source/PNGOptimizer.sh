@@ -47,7 +47,7 @@ thinPngImage(){
 	if [[ $isPng = 1 ]]; then
 		originalSize=$(wc -c <"$*")
 		echo "start thining：$* original size：$originalSize"
-		crunch $1
+		/usr/local/bin/crunch $1
 		echo "complete thining，start replacing.."
 		nosuffix=${1%.*}
 		crunchname="$nosuffix-crunch.png"
